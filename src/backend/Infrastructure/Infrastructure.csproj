@@ -14,9 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Extensions\" />
-      <Folder Include="ImplementationContract\Repositories\" />
-      <Folder Include="ImplementationContract\Services\" />
+      <Folder Include="DataAccess\Migrations\" />
     </ItemGroup>
 
 

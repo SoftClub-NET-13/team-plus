@@ -2,7 +2,7 @@ namespace Application.Extensions.Mappers;
 
 public static class SpecializationMapper
 {
-    public static SpecializationReadInfo ToReadDto(this Specialization specialization)
+    public static SpecializationReadInfo ToRead(this Specialization specialization)
     {
         return new SpecializationReadInfo(
             specialization.Name,
