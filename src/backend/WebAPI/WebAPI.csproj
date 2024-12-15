@@ -16,9 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="HelpersApi\ApiConvension\" />
     <Folder Include="HelpersApi\Extensions\API\" />
-    <Folder Include="HelpersApi\Extensions\DI\" />
   </ItemGroup>
 
 </Project>

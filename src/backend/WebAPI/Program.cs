@@ -1,22 +1,9 @@
-using System.Reflection;
-using FluentValidation;
-using WebAPI.HelpersApi.Extensions.FluentValidation;
+using WebAPI.HelpersApi.Extensions.DI;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
-
-builder.Services.AddMediatR(x => { x.AddOpenBehavior(typeof(ValidationBehavior<,>)); });
-builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
+builder.AddServices();
 
 WebApplication app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
-app.UseStaticFiles();
-app.MapControllers();
-
-app.Run();
+app.UseMiddlewares();

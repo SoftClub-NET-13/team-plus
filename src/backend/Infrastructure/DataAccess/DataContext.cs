@@ -14,7 +14,7 @@ public sealed class DataContext(DbContextOptions<DataContext> options) : DbConte
     public DbSet<Employee> Employees { get; set; }
     public DbSet<EmployeeSpecialization> EmployeeSpecializations { get; set; }
     public DbSet<Journal> Journals { get; set; }
-
+    public DbSet<Address> Addresses { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);

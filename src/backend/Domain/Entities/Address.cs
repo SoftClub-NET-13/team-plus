@@ -3,7 +3,7 @@ using Domain.Enums;
 
 namespace Domain.Entities;
 
-public class Address : BaseEntity
+public sealed class Address : BaseEntity
 {
     public string? HouseNumber { get; set; }
     public string? ApartmentNumber { get; set; }

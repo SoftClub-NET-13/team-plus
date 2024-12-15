@@ -1,7 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.HelpersApi.ApiConventions;
 
 namespace WebAPI.Controllers;
-public class BaseController:ControllerBase
+
+[ApiController]
+[ApiConventionType(typeof(CustomApiConventions))]
+public class BaseController : ControllerBase
 {
-    
+    protected string? GetErrorMessage
+    {
+        get
+        {
+            return ModelState.IsValid
+                ? null
+                : string.Join("; ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+        }
+    }
 }
