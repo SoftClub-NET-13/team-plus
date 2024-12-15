@@ -13,6 +13,12 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Extensions\" />
+      <Folder Include="ImplementationContract\Repositories\" />
+      <Folder Include="ImplementationContract\Services\" />
+    </ItemGroup>
+
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
