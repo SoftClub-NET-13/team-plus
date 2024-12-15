@@ -73,14 +73,25 @@ public class GenericRepository<T>(DataContext dbContext) : IGenericRepository<T>
 
     public async Task<Result<T?>> GetByIdAsync(Guid id)
     {
-        return Result<T?>
-            .Success(await dbContext.Set<T>()
-                .FirstOrDefaultAsync(x => x.Id == id));
+        T? res = await dbContext.Set<T>()
+            .FirstOrDefaultAsync(x => x.Id == id);
+        return res != null
+            ? Result<T?>.Success(res)
+            : Result<T?>.Failure(Error.NotFound());
     }
 
     public async Task<Result<int>> UpdateAsync(T value)
     {
         dbContext.Set<T>().Update(value);
+        int res = await dbContext.SaveChangesAsync();
+        return res > 0
+            ? Result<int>.Success(res)
+            : Result<int>.Failure(Error.InternalServerError());
+    }
+
+    public async Task<Result<int>> UpdateRangeAsync(IEnumerable<T> value)
+    {
+        dbContext.Set<T>().UpdateRange(value);
         int res = await dbContext.SaveChangesAsync();
         return res > 0
             ? Result<int>.Success(res)

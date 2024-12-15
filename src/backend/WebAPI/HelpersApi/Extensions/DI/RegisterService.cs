@@ -28,7 +28,7 @@ public static class RegisterService
         builder.Services.AddDbContext<DataContext>(x =>
         {
             x.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
-            // x.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            x.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             x.LogTo(Console.WriteLine);
         });
 
@@ -62,8 +62,8 @@ public static class RegisterService
         app.UseSwagger();
         app.UseSwaggerUI();
 
-        app.UseExceptionHandler("/error");
         app.UseStaticFiles();
+        app.UseExceptionHandler("/error");
         app.MapControllers();
 
         app.Run();
