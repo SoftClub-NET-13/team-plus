@@ -60,14 +60,16 @@ public class SpecializationService(ISpecializationRepository repository) : ISpec
     public async Task<BaseResult> UpdateAsync(Guid id, SpecializationUpdateInfo updateInfo)
     {
         Result<Specialization?> res = await repository.GetByIdAsync(id);
-        if (res.IsSuccess) return BaseResult.Failure(Error.NotFound());
 
+        Specialization entity = res.Value!;
+        if (!res.IsSuccess) return BaseResult.Failure(Error.NotFound());
+        
         bool conflict = (await repository.GetAllAsync()).Value!.Any(x =>
             (x.Code.ToLower() == updateInfo.Code.ToLower() ||
              x.Name.ToLower() == updateInfo.Name.ToLower()) && x.Id != id);
         if (conflict) return BaseResult.Failure(Error.Conflict());
 
-        Result<int> result = await repository.UpdateAsync(res.Value!.ToEntity(updateInfo));
+        Result<int> result = await repository.UpdateAsync(entity.ToEntity(updateInfo));
 
         return result.IsSuccess
             ? BaseResult.Success()

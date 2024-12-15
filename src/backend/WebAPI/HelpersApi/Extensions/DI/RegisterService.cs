@@ -24,18 +24,22 @@ public static class RegisterService
         //registration controller
         builder.Services.AddControllers();
 
-        // database registration
+
         builder.Services.AddDbContext<DataContext>(x =>
         {
             x.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
-            x.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            // x.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             x.LogTo(Console.WriteLine);
         });
 
         //fluent validation with mediatr
 
-        builder.Services.AddMediatR(x => { x.AddOpenBehavior(typeof(ValidationBehavior<,>)); });
-        builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.Services.AddMediatR(x =>
+        {
+            x.RegisterServicesFromAssembly(Assembly.GetCallingAssembly());
+            x.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        });
+        builder.Services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
 
         //registration generic repository
         builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -63,7 +67,7 @@ public static class RegisterService
         app.MapControllers();
 
         app.Run();
-        
+
         return app;
     }
 }

@@ -12,7 +12,6 @@ public sealed class City : BaseEntity
     public string Name { get; set; } = string.Empty;
     public string PostalCode { get; set; } = string.Empty;
     public string? Description { get; set; }
-    public TimeZoneInfo? TimeZone { get; set; }
     public Guid CountryId { get; set; }
 
     //navigation properties

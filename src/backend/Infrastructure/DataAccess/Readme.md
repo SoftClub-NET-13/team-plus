@@ -1,0 +1,2 @@
+enter to this path : TeamPulse\src\backend
+command for migrations: dotnet ef migrations add "name" -p .\Infrastructure\ -s .\WebAPI\ --output-dir TeamPulse/src/backend/infrastructure/DataAccsess/Migrations

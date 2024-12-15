@@ -86,13 +86,4 @@ public class GenericRepository<T>(DataContext dbContext) : IGenericRepository<T>
             ? Result<int>.Success(res)
             : Result<int>.Failure(Error.InternalServerError());
     }
-
-    public async Task<Result<int>> UpdateRangeAsync(IEnumerable<T> value)
-    {
-        dbContext.Set<T>().UpdateRange(value);
-        int res = await dbContext.SaveChangesAsync();
-        return res > 0
-            ? Result<int>.Success(res)
-            : Result<int>.Failure(Error.InternalServerError());
-    }
 }
