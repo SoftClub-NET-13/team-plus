@@ -8,7 +8,7 @@
     <Folder Include="Contracts\Repositories\" />
     <Folder Include="Contracts\Services\" />
     <Folder Include="DTOs\" />
-    <Folder Include="Extensions\" />
+    <Folder Include="Extensions\ResultPattern\" />
     <Folder Include="Filters\" />
   </ItemGroup>
 
