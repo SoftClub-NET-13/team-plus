@@ -1,17 +1,3 @@
-using System.Reflection;
-using Application.Contracts.Repositories;
-using Application.Contracts.Repositories.BaseRepository;
-using Application.Contracts.Repositories.BaseRepository.Crud;
-using Application.Contracts.Services;
-using FluentValidation;
-using Infrastructure.DataAccess;
-using Infrastructure.ImplementationContract.Repositories;
-using Infrastructure.ImplementationContract.Repositories.BaseRepository;
-using Infrastructure.ImplementationContract.Repositories.BaseRepository.Crud;
-using Infrastructure.ImplementationContract.Services;
-using Microsoft.EntityFrameworkCore;
-using WebAPI.HelpersApi.Extensions.FluentValidation;
-
 namespace WebAPI.HelpersApi.Extensions.DI;
 
 public static class RegisterService
@@ -32,14 +18,8 @@ public static class RegisterService
             x.LogTo(Console.WriteLine);
         });
 
-        //fluent validation with mediatr
-
-        builder.Services.AddMediatR(x =>
-        {
-            x.RegisterServicesFromAssembly(Assembly.GetCallingAssembly());
-            x.AddOpenBehavior(typeof(ValidationBehavior<,>));
-        });
-        builder.Services.AddValidatorsFromAssembly(Assembly.GetCallingAssembly());
+        //fluent validation ? for automatic validation ,need use mediatr.
+        //builder.Services.AddValidatorsFromAssembly(typeof(Application.Application).Assembly);
 
         //registration generic repository
         builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

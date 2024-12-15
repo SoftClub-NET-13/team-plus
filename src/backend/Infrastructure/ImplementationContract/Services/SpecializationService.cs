@@ -1,14 +1,4 @@
-using System.Linq.Expressions;
-using Application.Contracts.Repositories;
-using Application.Contracts.Services;
-using Application.DTOs;
-using Application.Extensions.Mappers;
-using Application.Extensions.Responses.PagedResponse;
-using Application.Extensions.ResultPattern;
-using Application.Filters;
-using Domain.Common;
-using Domain.Entities;
-using Infrastructure.Extensions;
+
 
 namespace Infrastructure.ImplementationContract.Services;
 
@@ -67,9 +57,8 @@ public class SpecializationService(ISpecializationRepository repository) : ISpec
             (x.Code.ToLower() == updateInfo.Code.ToLower() ||
              x.Name.ToLower() == updateInfo.Name.ToLower()) && x.Id != id);
         if (conflict) return BaseResult.Failure(Error.Conflict());
-        Specialization entity = res.Value!;
 
-        Result<int> result = await repository.UpdateAsync(entity.ToEntity(updateInfo));
+        Result<int> result = await repository.UpdateAsync(res.Value!.ToEntity(updateInfo));
 
         return result.IsSuccess
             ? BaseResult.Success()

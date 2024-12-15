@@ -1,6 +1,3 @@
-using Domain.Common;
-using Microsoft.AspNetCore.Mvc;
-
 namespace WebAPI.HelpersApi.ApiConventions;
 
 public static class CustomApiConventions

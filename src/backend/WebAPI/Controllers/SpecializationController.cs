@@ -1,9 +1,3 @@
-using Application.Contracts.Services;
-using Application.DTOs;
-using Application.Filters;
-using Microsoft.AspNetCore.Mvc;
-using WebAPI.HelpersApi.Extensions.ResultPattern;
-
 namespace WebAPI.Controllers;
 
 [Route("/api/specializations")]

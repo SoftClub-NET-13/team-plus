@@ -10,3 +10,4 @@ public abstract class BaseEntity
     public long Version { get; set; } = 1;
     public bool IsActive { get; set; } = true;
 }
+

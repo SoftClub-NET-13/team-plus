@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-
 namespace WebAPI.Controllers;
 
 [Route("/error")]
@@ -12,12 +9,22 @@ public class ErrorController : BaseController
     {
         Exception? exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
 
-        return Problem(
-            title: "An unexpected error occurred",
-            detail: exception?.Message + "\n" + GetErrorMessage,
-            statusCode: StatusCodes.Status500InternalServerError,
-            instance: HttpContext.Request.Path,
-            type: "https://metanit.com"
-        );
+        return exception switch
+        {
+            ValidationException => Problem(
+                title: "Validation exception!",
+                detail: exception?.Message,
+                statusCode: StatusCodes.Status400BadRequest,
+                instance: HttpContext.Request.Path,
+                type: exception?.HelpLink
+            ),
+            _ => Problem(
+                title: "An unexpected error occurred",
+                detail: exception?.Message,
+                statusCode: StatusCodes.Status500InternalServerError,
+                instance: HttpContext.Request.Path,
+                type: "https://metanit.com"
+            )
+        };
     }
 }

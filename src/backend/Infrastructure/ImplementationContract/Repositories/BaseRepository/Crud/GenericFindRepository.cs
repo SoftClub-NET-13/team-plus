@@ -25,8 +25,10 @@ public class GenericFindRepository<T>(DataContext dbContext) : IGenericFindRepos
 
     public async Task<Result<T?>> GetByIdAsync(Guid id)
     {
-        return Result<T?>
-            .Success(await dbContext.Set<T>()
-                .FirstOrDefaultAsync(x => x.Id == id));
+        T? res = await dbContext.Set<T>()
+            .FirstOrDefaultAsync(x => x.Id == id);
+        return res != null
+            ? Result<T?>.Success(res)
+            : Result<T?>.Failure(Error.NotFound());
     }
 }

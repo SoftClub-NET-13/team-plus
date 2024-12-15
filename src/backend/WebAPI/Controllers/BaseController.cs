@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using WebAPI.HelpersApi.ApiConventions;
-
 namespace WebAPI.Controllers;
 
 [ApiController]

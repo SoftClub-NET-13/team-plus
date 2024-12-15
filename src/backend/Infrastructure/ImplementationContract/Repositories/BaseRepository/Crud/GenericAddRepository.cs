@@ -13,7 +13,7 @@ public class GenericAddRepository<T>(DataContext dbContext) : IGenericAddReposit
         int res = await dbContext.SaveChangesAsync();
         return res > 0
             ? Result<int>.Success(res)
-            : Result<int>.Failure(Error.InternalServerError("Couldn't add data to database'"));
+            : Result<int>.Failure(Error.InternalServerError());
     }
 
     public async Task<Result<int>> AddRangeAsync(IEnumerable<T> entities)
@@ -22,6 +22,6 @@ public class GenericAddRepository<T>(DataContext dbContext) : IGenericAddReposit
         int res = await dbContext.SaveChangesAsync();
         return res > 0
             ? Result<int>.Success(res)
-            : Result<int>.Failure(Error.InternalServerError("Couldn't add data's to database'"));
+            : Result<int>.Failure(Error.InternalServerError());
     }
 }

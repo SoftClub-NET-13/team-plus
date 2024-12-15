@@ -1,9 +1,4 @@
-using System.Linq.Expressions;
-using Application.Contracts.Repositories.BaseRepository;
-using Application.Extensions.ResultPattern;
-using Domain.Common;
-using Infrastructure.DataAccess;
-using Microsoft.EntityFrameworkCore;
+using Domain.Extensions;
 
 namespace Infrastructure.ImplementationContract.Repositories.BaseRepository;
 
@@ -15,7 +10,7 @@ public class GenericRepository<T>(DataContext dbContext) : IGenericRepository<T>
         int res = await dbContext.SaveChangesAsync();
         return res > 0
             ? Result<int>.Success(res)
-            : Result<int>.Failure(Error.InternalServerError("Couldn't add data to database'"));
+            : Result<int>.Failure(Error.InternalServerError());
     }
 
     public async Task<Result<int>> AddRangeAsync(IEnumerable<T> entities)
@@ -24,18 +19,16 @@ public class GenericRepository<T>(DataContext dbContext) : IGenericRepository<T>
         int res = await dbContext.SaveChangesAsync();
         return res > 0
             ? Result<int>.Success(res)
-            : Result<int>.Failure(Error.InternalServerError("Couldn't add data's to database'"));
+            : Result<int>.Failure(Error.InternalServerError());
     }
 
     public async Task<Result<int>> DeleteAsync(Guid id)
     {
-        BaseEntity? entity = await dbContext.Set<T>().AsTracking().FirstOrDefaultAsync(x => x.Id == id);
+        T? entity = await dbContext.Set<T>().AsTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (entity == null)
             return Result<int>.Failure(Error.NotFound());
-        entity.Version++;
-        entity.IsDeleted = true;
-        entity.UpdatedAt = DateTimeOffset.Now;
-        entity.DeletedAt = DateTimeOffset.Now;
+
+        entity.ToDelete();
         int res = await dbContext.SaveChangesAsync();
         return res > 0
             ? Result<int>.Success(res)
@@ -44,13 +37,11 @@ public class GenericRepository<T>(DataContext dbContext) : IGenericRepository<T>
 
     public async Task<Result<int>> DeleteAsync(T value)
     {
-        BaseEntity? entity = await dbContext.Set<T>().AsTracking().FirstOrDefaultAsync(x => x.Id == value.Id);
+        T? entity = await dbContext.Set<T>().AsTracking().FirstOrDefaultAsync(x => x.Id == value.Id);
         if (entity == null)
             return Result<int>.Failure(Error.NotFound());
-        entity.Version++;
-        entity.IsDeleted = true;
-        entity.UpdatedAt = DateTimeOffset.Now;
-        entity.DeletedAt = DateTimeOffset.Now;
+
+        entity.ToDelete();
         int res = await dbContext.SaveChangesAsync();
         return res > 0
             ? Result<int>.Success(res)
@@ -82,6 +73,7 @@ public class GenericRepository<T>(DataContext dbContext) : IGenericRepository<T>
 
     public async Task<Result<int>> UpdateAsync(T value)
     {
+        dbContext.Set<T>().AsTracking();
         dbContext.Set<T>().Update(value);
         int res = await dbContext.SaveChangesAsync();
         return res > 0
@@ -91,6 +83,7 @@ public class GenericRepository<T>(DataContext dbContext) : IGenericRepository<T>
 
     public async Task<Result<int>> UpdateRangeAsync(IEnumerable<T> value)
     {
+        dbContext.Set<T>().AsTracking();
         dbContext.Set<T>().UpdateRange(value);
         int res = await dbContext.SaveChangesAsync();
         return res > 0

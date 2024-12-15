@@ -1,14 +1,10 @@
-using Application.Contracts.Repositories.BaseRepository.Crud;
-using Application.Extensions.ResultPattern;
-using Domain.Common;
-using Infrastructure.DataAccess;
-
 namespace Infrastructure.ImplementationContract.Repositories.BaseRepository.Crud;
 
 public class GenericUpdateRepository<T>(DataContext dbContext) : IGenericUpdateRepository<T> where T : BaseEntity
 {
     public async Task<Result<int>> UpdateAsync(T value)
     {
+        dbContext.Set<T>().AsTracking();
         dbContext.Set<T>().Update(value);
         int res = await dbContext.SaveChangesAsync();
         return res > 0
@@ -18,6 +14,7 @@ public class GenericUpdateRepository<T>(DataContext dbContext) : IGenericUpdateR
 
     public async Task<Result<int>> UpdateRangeAsync(IEnumerable<T> value)
     {
+        dbContext.Set<T>().AsTracking();
         dbContext.Set<T>().UpdateRange(value);
         int res = await dbContext.SaveChangesAsync();
         return res > 0
