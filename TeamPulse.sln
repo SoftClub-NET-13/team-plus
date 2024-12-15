@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{172D9E65-FE27-486A-B879-BBF4AD7B9749}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{46CC802E-90E9-42BD-90A8-E28E65FD43A0}"
-	ProjectSection(SolutionItems) = preProject
-		src\backend\Readme.md = src\backend\Readme.md
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\backend\Domain\Domain.csproj", "{F6B2D6D4-16A8-4FF2-B798-381741CE9615}"
 EndProject
@@ -19,9 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "src\backend\WebAPI\WebAPI.csproj", "{373D12C2-5CE3-474F-B0D8-90B8E8272967}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "frontend", "frontend", "{DEA257C2-DF0C-4FA6-A18B-C860CFC44F32}"
-	ProjectSection(SolutionItems) = preProject
-		src\backend\Readme.md = src\backend\Readme.md
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\frontend\Infrastructure\Infrastructure.csproj", "{37C59B00-24B7-4CE5-8984-A117AAEBAB2A}"
 EndProject

@@ -4,14 +4,6 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contracts\Repositories\" />
-    <Folder Include="Contracts\Services\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Extensions\ResultPattern\" />
-    <Folder Include="Filters\" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
