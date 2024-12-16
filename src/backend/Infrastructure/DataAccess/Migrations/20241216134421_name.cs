@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class _1 : Migration
+    public partial class name : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,10 +35,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
-                    table.UniqueConstraint("AK_Countries_Code", x => x.Code);
-                    table.UniqueConstraint("AK_Countries_CurrencyCode", x => x.CurrencyCode);
-                    table.UniqueConstraint("AK_Countries_Name", x => x.Name);
-                    table.UniqueConstraint("AK_Countries_PhoneCode", x => x.PhoneCode);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,8 +54,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Specializations", x => x.Id);
-                    table.UniqueConstraint("AK_Specializations_Code", x => x.Code);
-                    table.UniqueConstraint("AK_Specializations_Name", x => x.Name);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,8 +80,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cities", x => x.Id);
-                    table.UniqueConstraint("AK_Cities_Name", x => x.Name);
-                    table.UniqueConstraint("AK_Cities_PostalCode", x => x.PostalCode);
                     table.ForeignKey(
                         name: "FK_Cities_Countries_CountryId",
                         column: x => x.CountryId,
@@ -177,6 +169,7 @@ namespace Infrastructure.Migrations
                     StreetId = table.Column<Guid>(type: "uuid", nullable: false),
                     Latitude = table.Column<double>(type: "double precision", nullable: false),
                     Longitude = table.Column<double>(type: "double precision", nullable: false),
+                    AddressId1 = table.Column<Guid>(type: "uuid", nullable: true),
                     CityId1 = table.Column<Guid>(type: "uuid", nullable: true),
                     CountryId1 = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -197,6 +190,11 @@ namespace Infrastructure.Migrations
                         principalTable: "Addresses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Locations_Addresses_AddressId1",
+                        column: x => x.AddressId1,
+                        principalTable: "Addresses",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Locations_Cities_CityId",
                         column: x => x.CityId,
@@ -243,9 +241,8 @@ namespace Infrastructure.Migrations
                     LeftDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ProfilePictureUrl = table.Column<string>(type: "text", nullable: false),
                     JournalId = table.Column<Guid>(type: "uuid", nullable: false),
-                    JournalId1 = table.Column<Guid>(type: "uuid", nullable: true),
                     LocationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LocationId1 = table.Column<Guid>(type: "uuid", nullable: true),
+                    JournalId1 = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     DeletedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -256,19 +253,18 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.Id);
-                    table.UniqueConstraint("AK_Employees_Email", x => x.Email);
-                    table.UniqueConstraint("AK_Employees_PhoneNumber", x => x.PhoneNumber);
+                    table.ForeignKey(
+                        name: "FK_Employees_Locations_Id",
+                        column: x => x.Id,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Employees_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Employees_Locations_LocationId1",
-                        column: x => x.LocationId1,
-                        principalTable: "Locations",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -377,11 +373,6 @@ namespace Infrastructure.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_LocationId1",
-                table: "Employees",
-                column: "LocationId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_EmployeeSpecializations_EmployeeId1",
                 table: "EmployeeSpecializations",
                 column: "EmployeeId1");
@@ -400,6 +391,12 @@ namespace Infrastructure.Migrations
                 name: "IX_Journals_EmployeeId",
                 table: "Journals",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locations_AddressId1",
+                table: "Locations",
+                column: "AddressId1",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locations_CityId",

@@ -4,18 +4,12 @@ public class GenericUpdateRepository<T>(DataContext dbContext) : IGenericUpdateR
 {
     public async Task<Result<int>> UpdateAsync(T value)
     {
-        dbContext.Set<T>().AsTracking();
-        dbContext.Set<T>().Update(value);
-        int res = await dbContext.SaveChangesAsync();
-        return res > 0
-            ? Result<int>.Success(res)
-            : Result<int>.Failure(Error.InternalServerError());
-    }
+        T? existing = await dbContext.Set<T>().AsTracking().FirstOrDefaultAsync(x => x.Id == value.Id);
+        if (existing == null)
+            return Result<int>.Failure(Error.NotFound());
 
-    public async Task<Result<int>> UpdateRangeAsync(IEnumerable<T> value)
-    {
-        dbContext.Set<T>().AsTracking();
-        dbContext.Set<T>().UpdateRange(value);
+        dbContext.Entry(existing).CurrentValues.SetValues(value);
+
         int res = await dbContext.SaveChangesAsync();
         return res > 0
             ? Result<int>.Success(res)

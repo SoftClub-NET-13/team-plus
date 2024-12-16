@@ -21,3 +21,4 @@ global using Microsoft.AspNetCore.Diagnostics;
 global using Application.DTOs;
 global using Application.Filters;
 global using WebAPI.HelpersApi.Extensions.ResultPattern;
+global using WebAPI.HelpersApi.Extensions.DI;

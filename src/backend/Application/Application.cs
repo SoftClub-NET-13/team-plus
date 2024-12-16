@@ -1,6 +1,3 @@
 namespace Application;
 
-public abstract class Application
-{
-    
-}
+public abstract class Application;

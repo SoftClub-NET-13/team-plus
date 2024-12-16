@@ -16,10 +16,11 @@ public sealed class Employee : BaseEntity
     public DateTime HireDate { get; set; }
     public DateTime LeftDate { get; set; }
     public string ProfilePictureUrl { get; set; } = FileData.DefaultEmployee;
-
     public Guid JournalId { get; set; }
-    public Journal? Journal { get; set; }
     public Guid LocationId { get; set; }
+    
+    //navigation properties
+    public Journal? Journal { get; set; }
     public Location? Location { get; set; }
     public ICollection<EmployeeSpecialization> EmployeeSpecializations { get; set; } = [];
 }

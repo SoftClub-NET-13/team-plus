@@ -1,7 +1,5 @@
 namespace Application.Validations.Specialization;
 
-using FluentValidation;
-
 public class Create : AbstractValidator<SpecializationCreateInfo>
 {
     public Create()

@@ -1,6 +1,5 @@
-using Domain.Entities;
-using Infrastructure.Extensions;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Infrastructure.DataAccess;
 
@@ -15,10 +14,20 @@ public sealed class DataContext(DbContextOptions<DataContext> options) : DbConte
     public DbSet<EmployeeSpecialization> EmployeeSpecializations { get; set; }
     public DbSet<Journal> Journals { get; set; }
     public DbSet<Address> Addresses { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
+        foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            IMutableEntityType? baseType = entityType.BaseType;
+            if (baseType != null)
+            {
+                modelBuilder.Entity(entityType.ClrType).UseTpcMappingStrategy();
+            }
+        }
+
         modelBuilder.FilterSoftDeletedProperties();
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(Infrastructure).Assembly);
         base.OnModelCreating(modelBuilder);
     }
 }

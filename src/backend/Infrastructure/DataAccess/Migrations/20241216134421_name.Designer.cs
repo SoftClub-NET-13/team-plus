@@ -3,17 +3,20 @@ using System;
 using Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241216134421_name")]
+    partial class name
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,10 +129,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Name");
-
-                    b.HasAlternateKey("PostalCode");
-
                     b.HasIndex("CountryId");
 
                     b.HasIndex("CountryId1");
@@ -193,21 +192,12 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Code");
-
-                    b.HasAlternateKey("CurrencyCode");
-
-                    b.HasAlternateKey("Name");
-
-                    b.HasAlternateKey("PhoneCode");
-
                     b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("Domain.Entities.Employee", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -255,9 +245,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("LocationId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("LocationId1")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
@@ -277,15 +264,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Email");
-
-                    b.HasAlternateKey("PhoneNumber");
-
                     b.HasIndex("JournalId1");
 
                     b.HasIndex("LocationId");
-
-                    b.HasIndex("LocationId1");
 
                     b.ToTable("Employees");
                 });
@@ -403,6 +384,9 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("AddressId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("AddressId1")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("CityId")
                         .HasColumnType("uuid");
 
@@ -448,6 +432,9 @@ namespace Infrastructure.Migrations
 
                     b.HasAlternateKey("CountryId", "CityId", "StreetId", "AddressId");
 
+                    b.HasIndex("AddressId1")
+                        .IsUnique();
+
                     b.HasIndex("CityId");
 
                     b.HasIndex("CityId1");
@@ -492,10 +479,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("Code");
-
-                    b.HasAlternateKey("Name");
 
                     b.ToTable("Specializations");
                 });
@@ -564,14 +547,14 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.City", b =>
                 {
-                    b.HasOne("Domain.Entities.Country", null)
-                        .WithMany("Cities")
+                    b.HasOne("Domain.Entities.Country", "Country")
+                        .WithMany()
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Country", "Country")
-                        .WithMany()
+                    b.HasOne("Domain.Entities.Country", null)
+                        .WithMany("Cities")
                         .HasForeignKey("CountryId1");
 
                     b.Navigation("Country");
@@ -579,19 +562,21 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Employee", b =>
                 {
+                    b.HasOne("Domain.Entities.Location", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Journal", "Journal")
                         .WithMany()
                         .HasForeignKey("JournalId1");
 
-                    b.HasOne("Domain.Entities.Location", null)
-                        .WithMany("Employees")
+                    b.HasOne("Domain.Entities.Location", "Location")
+                        .WithMany()
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Domain.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId1");
 
                     b.Navigation("Journal");
 
@@ -639,10 +624,14 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Location", b =>
                 {
                     b.HasOne("Domain.Entities.Address", "Address")
-                        .WithOne("Location")
+                        .WithOne()
                         .HasForeignKey("Domain.Entities.Location", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Domain.Entities.Address", null)
+                        .WithOne("Location")
+                        .HasForeignKey("Domain.Entities.Location", "AddressId1");
 
                     b.HasOne("Domain.Entities.City", "City")
                         .WithMany()

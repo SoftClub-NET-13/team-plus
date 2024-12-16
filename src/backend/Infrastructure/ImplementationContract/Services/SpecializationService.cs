@@ -68,7 +68,7 @@ public class SpecializationService(ISpecializationRepository repository) : ISpec
     public async Task<BaseResult> DeleteAsync(Guid id)
     {
         Result<Specialization?> res = await repository.GetByIdAsync(id);
-        if (res.IsSuccess) return BaseResult.Failure(Error.NotFound());
+        if (!res.IsSuccess) return BaseResult.Failure(Error.NotFound());
 
         Result<int> result = await repository.DeleteAsync(id);
 

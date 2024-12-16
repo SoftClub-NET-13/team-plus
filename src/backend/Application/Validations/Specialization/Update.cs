@@ -1,7 +1,5 @@
 namespace Application.Validations.Specialization;
 
-using FluentValidation;
-
 public class UpdateSpecializationValidation : AbstractValidator<SpecializationUpdateInfo>
 {
     public UpdateSpecializationValidation()

@@ -1,5 +1,3 @@
-using WebAPI.HelpersApi.Extensions.DI;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.AddServices();

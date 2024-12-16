@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Domain.Common;
 
 public abstract class BaseEntity
 {
-    public Guid Id { get; set; } = default!;
+    public Guid Id { get; set; } = Guid.NewGuid();
+
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.MinValue;
     public DateTimeOffset DeletedAt { get; set; } = DateTimeOffset.MinValue;
@@ -10,4 +13,3 @@ public abstract class BaseEntity
     public long Version { get; set; } = 1;
     public bool IsActive { get; set; } = true;
 }
-

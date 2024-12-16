@@ -14,5 +14,4 @@ global using Infrastructure.Extensions;
 global using Infrastructure.ImplementationContract.Repositories.BaseRepository;
 global using Application.Contracts.Repositories.BaseRepository;
 global using Microsoft.EntityFrameworkCore;
-using Domain.Common;
-
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
