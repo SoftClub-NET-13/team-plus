@@ -12,5 +12,6 @@ public sealed class Address : BaseEntity
     //navigation properties
     public Guid StreetId { get; set; }
     public Street? Street { get; set; }
+    
     public Location? Location { get; set; }
 }

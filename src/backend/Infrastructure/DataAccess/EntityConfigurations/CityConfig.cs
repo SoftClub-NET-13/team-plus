@@ -4,6 +4,8 @@ public sealed class CityConfig : IEntityTypeConfiguration<City>
 {
     public void Configure(EntityTypeBuilder<City> builder)
     {
+        builder.HasKey(x => x.Id);
+        
         builder.HasMany<Location>()
             .WithOne(x => x.City)
             .HasForeignKey(x => x.CityId);

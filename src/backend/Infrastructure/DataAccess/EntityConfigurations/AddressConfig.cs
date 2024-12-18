@@ -4,6 +4,8 @@ public sealed class AddressConfig : IEntityTypeConfiguration<Address>
 {
     public void Configure(EntityTypeBuilder<Address> builder)
     {
+        builder.HasKey(x => x.Id);
+        
         builder.HasOne<Location>()
             .WithOne(x => x.Address)
             .HasForeignKey<Location>(x => x.AddressId);

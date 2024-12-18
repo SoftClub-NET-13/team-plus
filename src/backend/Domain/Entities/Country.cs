@@ -15,8 +15,6 @@ public sealed class Country : BaseEntity
     public CountryCode Code { get; set; }
     public PhoneCode PhoneCode { get; set; }
     public CurrencyCode CurrencyCode { get; set; }
-
-
     public ICollection<City> Cities { get; set; } = [];
     public ICollection<Location> Locations { get; set; } = [];
 }

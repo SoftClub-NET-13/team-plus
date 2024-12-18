@@ -3,6 +3,7 @@ global using Application.Extensions.ResultPattern;
 global using Domain.Common;
 global using Infrastructure.DataAccess;
 global using System.Linq.Expressions;
+global using Domain.Common;
 global using Application.Contracts.Repositories;
 global using Application.Contracts.Services;
 global using Application.DTOs;

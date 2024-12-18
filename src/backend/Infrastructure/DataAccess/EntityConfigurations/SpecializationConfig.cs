@@ -4,5 +4,9 @@ public sealed class SpecializationConfig : IEntityTypeConfiguration<Specializati
 {
     public void Configure(EntityTypeBuilder<Specialization> builder)
     {
+        builder.HasKey(x => x.Id);
+        builder.HasMany<EmployeeSpecialization>()
+            .WithOne(x => x.Specialization)
+            .HasForeignKey(x => x.SpecializationId);
     }
 }

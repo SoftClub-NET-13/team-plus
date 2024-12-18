@@ -12,10 +12,10 @@ public sealed class City : BaseEntity
     public string Name { get; set; } = string.Empty;
     public string PostalCode { get; set; } = string.Empty;
     public string? Description { get; set; }
-    public Guid CountryId { get; set; }
 
-    //navigation properties
+    public Guid CountryId { get; set; }
     public Country? Country { get; set; }
+    
     public ICollection<Street> Streets { get; set; } = [];
     public ICollection<Location> Locations { get; set; } = [];
 }

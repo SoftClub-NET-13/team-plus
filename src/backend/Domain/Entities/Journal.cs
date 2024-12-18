@@ -10,10 +10,9 @@ public class Journal : BaseEntity
     public int Late { get; set; }
     public bool IsPaid { get; set; } = false;
     public DateTimeOffset? DueDate { get; set; }
-    public Guid EmployeeId { get; set; }
-
     //for minute
     public decimal LatePenalty { get; set; }
 
+    public Guid EmployeeId { get; set; }
     public Employee? Employee { get; set; }
 }
