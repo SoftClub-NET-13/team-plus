@@ -1,6 +1,3 @@
-using Domain.Common;
-using Domain.Enums;
-
 namespace Domain.Entities;
 
 public sealed class Address : BaseEntity
@@ -11,7 +8,7 @@ public sealed class Address : BaseEntity
 
     //navigation properties
     public Guid StreetId { get; set; }
-    public Street? Street { get; set; }
-    
-    public Location? Location { get; set; }
+    public Street Street { get; set; } = null!;
+
+    public Location Location { get; set; } = null!;
 }

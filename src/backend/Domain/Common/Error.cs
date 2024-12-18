@@ -1,5 +1,3 @@
-using Domain.Enums;
-
 namespace Domain.Common;
 
 public sealed record Error

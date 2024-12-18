@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
-
 namespace Infrastructure.DataAccess;
 
 public sealed class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
@@ -17,17 +14,7 @@ public sealed class DataContext(DbContextOptions<DataContext> options) : DbConte
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
-        {
-            IMutableEntityType? baseType = entityType.BaseType;
-            if (baseType != null)
-            {
-                modelBuilder.Entity(entityType.ClrType).UseTpcMappingStrategy();
-            }
-        }
-
-        modelBuilder.FilterSoftDeletedProperties();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Infrastructure).Assembly);
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.FilterSoftDeletedProperties();
     }
 }

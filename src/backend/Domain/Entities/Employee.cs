@@ -1,7 +1,3 @@
-using Domain.Common;
-using Domain.Constants;
-using Domain.Enums;
-
 namespace Domain.Entities;
 
 public sealed class Employee : BaseEntity
@@ -16,10 +12,10 @@ public sealed class Employee : BaseEntity
     public DateTime HireDate { get; set; }
     public DateTime LeftDate { get; set; }
     public string ProfilePictureUrl { get; set; } = FileData.DefaultEmployee;
-    
+
     public Guid LocationId { get; set; }
-    public Location? Location { get; set; }
-    
+    public Location Location { get; set; } = null!;
+
     public ICollection<Journal> Journals { get; set; } = [];
     public ICollection<EmployeeSpecialization> EmployeeSpecializations { get; set; } = [];
 }

@@ -1,9 +1,3 @@
-using System.Linq.Expressions;
-using Domain.Common;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Query;
-
 namespace Infrastructure.Extensions;
 
 public static class EfCore

@@ -1,6 +1,3 @@
-using Domain.Common;
-using Domain.Constants;
-
 namespace Domain.Entities;
 
 public sealed class City : BaseEntity
@@ -14,8 +11,8 @@ public sealed class City : BaseEntity
     public string? Description { get; set; }
 
     public Guid CountryId { get; set; }
-    public Country? Country { get; set; }
-    
+    public Country Country { get; set; } = null!;
+
     public ICollection<Street> Streets { get; set; } = [];
     public ICollection<Location> Locations { get; set; } = [];
 }

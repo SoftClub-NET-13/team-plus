@@ -1,5 +1,3 @@
-
-
 namespace Infrastructure.ImplementationContract.Services;
 
 public class SpecializationService(ISpecializationRepository repository) : ISpecializationService
@@ -7,22 +5,30 @@ public class SpecializationService(ISpecializationRepository repository) : ISpec
     public async Task<Result<PagedResponse<IEnumerable<SpecializationReadInfo>>>> GetAllAsync(
         SpecializationFilter filter)
     {
-        Expression<Func<Specialization, bool>> filterExpression = spec =>
-            (string.IsNullOrEmpty(filter.Name) || spec.Name.ToLower().Contains(filter.Name.ToLower())) &&
-            (string.IsNullOrEmpty(filter.Code) || spec.Code.ToLower().Contains(filter.Code.ToLower()));
+        return await Task.Run(() =>
+        {
+            Expression<Func<Specialization, bool>> filterExpression = spec =>
+                (string.IsNullOrEmpty(filter.Name) || spec.Name.ToLower().Contains(filter.Name.ToLower())) &&
+                (string.IsNullOrEmpty(filter.Code) || spec.Code.ToLower().Contains(filter.Code.ToLower()));
 
-        List<SpecializationReadInfo> query = (await repository
-            .FindAsync(filterExpression)).Value!.Select(x => x.ToRead()).ToList();
+            Result<IQueryable<Specialization>> request = repository
+                .Find(filterExpression);
 
-        int count = query.Count();
+            if (!request.IsSuccess)
+                return Result<PagedResponse<IEnumerable<SpecializationReadInfo>>>.Failure(request.Error);
 
-        IEnumerable<SpecializationReadInfo> spec =
-            query.Page(filter.PageNumber, filter.PageSize);
+            List<SpecializationReadInfo> query = request.Value!.Select(x => x.ToRead()).ToList();
 
-        PagedResponse<IEnumerable<SpecializationReadInfo>> res =
-            PagedResponse<IEnumerable<SpecializationReadInfo>>.Create(filter.PageNumber, filter.PageSize, count, spec);
+            int count = query.Count;
 
-        return Result<PagedResponse<IEnumerable<SpecializationReadInfo>>>.Success(res);
+            IEnumerable<SpecializationReadInfo> spec =
+                query.Page(filter.PageNumber, filter.PageSize);
+
+            PagedResponse<IEnumerable<SpecializationReadInfo>> res =
+                PagedResponse<IEnumerable<SpecializationReadInfo>>.Create(filter.PageNumber, filter.PageSize, count, spec);
+
+            return Result<PagedResponse<IEnumerable<SpecializationReadInfo>>>.Success(res);
+        });
     }
 
     public async Task<Result<SpecializationReadInfo>> GetByIdAsync(Guid id)
@@ -52,7 +58,7 @@ public class SpecializationService(ISpecializationRepository repository) : ISpec
         Result<Specialization?> res = await repository.GetByIdAsync(id);
 
         if (!res.IsSuccess) return BaseResult.Failure(Error.NotFound());
-        
+
         bool conflict = (await repository.GetAllAsync()).Value!.Any(x =>
             (x.Code.ToLower() == updateInfo.Code.ToLower() ||
              x.Name.ToLower() == updateInfo.Name.ToLower()) && x.Id != id);

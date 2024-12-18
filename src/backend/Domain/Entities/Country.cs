@@ -1,7 +1,3 @@
-using Domain.Common;
-using Domain.Constants;
-using Domain.Enums;
-
 namespace Domain.Entities;
 
 public sealed class Country : BaseEntity

@@ -4,5 +4,5 @@ public interface IGenericFindRepository<T> where T : BaseEntity
 {
     Task<Result<T?>> GetByIdAsync(Guid id);
     Task<Result<IEnumerable<T>>> GetAllAsync();
-    Task<Result<IEnumerable<T>>> FindAsync(Expression<Func<T, bool>> expression);
+    Result<IQueryable<T>> Find(Expression<Func<T, bool>> expression);
 }
